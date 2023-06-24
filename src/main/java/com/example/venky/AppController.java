@@ -1,10 +1,13 @@
 package com.example.venky;
 
+import com.example.venky.serviceinterface.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,7 +17,8 @@ public class AppController {
 
     @Autowired
       EmployeeRepo employeeRepo;
-
+@Autowired
+    AppService service;
 
     @GetMapping("/")
     public String gene(){
@@ -58,6 +62,7 @@ public class AppController {
             Employee e=l.get();
             return ResponseEntity.ok(e);
 
+
         }
         else{
             return ResponseEntity.notFound().build();
@@ -89,6 +94,36 @@ public class AppController {
 
         Employee em=employeeRepo.save(existingEmployee);
         return ResponseEntity.ok(em);
+    }
+
+    @GetMapping("/getNum")
+    public ResponseEntity<List<Integer>> findNumbers(
+            @RequestParam Integer fromNum,
+            @RequestParam Integer toNum,
+            @RequestParam Integer ch
+    ) {
+        List<Integer> numbers = service.findNumbers(fromNum, toNum, ch);
+        return ResponseEntity.ok(numbers);}
+
+    @GetMapping("/getNumber/{n}")
+    public List<String> getNumbers(@PathVariable Integer n){
+        List<String>l = new ArrayList<>();
+        l=service.getNumbers(n);
+        return l;
+    }
+
+    @GetMapping("/fibonacii/{count}")
+    public List<Integer> getFibonacii(@PathVariable Integer count){
+        List<Integer> l =service.getFibonacii(count);
+        return l;
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> addNumbers(@RequestParam Integer a,@RequestParam Integer b){
+        Integer i=a+b;
+        String s="the result of sum is "+ i;
+        return ResponseEntity.ok(s);
+
     }
 
 
