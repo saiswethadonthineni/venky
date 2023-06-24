@@ -1,18 +1,17 @@
 package com.example.venky;
 
 import com.example.venky.serviceinterface.AppService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 public class AppController {
 
     @Autowired
@@ -28,17 +27,15 @@ public class AppController {
     @GetMapping("/getAll")
     public List<Employee> getEmployee(@RequestParam(name="id",required=false) Integer id,@RequestParam(name="status",required = false) Integer status){
 
-        System.out.println("Hey venky its coming here");
+       log.info("Hey venky its coming here");
         List<Employee> l=employeeRepo.findAll();
-        l.stream().map(n->n.getId()>6).collect(Collectors.toList());
-        if(id!=null&status!=null){
+       // l.stream().map(n->n.getId()>6).collect(Collectors.toList());
+        if(id!=null&&status!=null){
             l=employeeRepo.getEmployeesByIdAndStatus(id,status);
         }
         else{
             l=employeeRepo.findAll();
         }
-       // l=employeeRepo.findAll();
-       // System.out.println(l);
         return l;
     }
 
@@ -81,7 +78,7 @@ public class AppController {
     }
 
     @PutMapping("/updateDetails/{id}")
-    public ResponseEntity<Employee> UpdateDetails(@PathVariable Integer id,@RequestBody EmployeeDto employeeDto){
+    public ResponseEntity<Employee> updateDetails(@PathVariable Integer id, @RequestBody EmployeeDto employeeDto){
         System.out.println("hi");
         System.out.println(employeeDto);
         Optional<Employee> e=employeeRepo.findById(id);
