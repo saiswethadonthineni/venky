@@ -96,9 +96,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>org.springboot.app.Main</mainClass>
-				</configuration>
+				<executions>
+					<execution>
+						<configuration>
+							<mainClass>com.example.venky.VenkyApplication</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
